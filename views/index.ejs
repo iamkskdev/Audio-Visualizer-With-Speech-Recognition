@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Friday Voice Visualizer</title>
+  <style>
+    :root {
+      --bg: #070b17;
+      --text: #e8eeff;
+      --muted: #a3b2dc;
+      --panel: rgba(10, 14, 28, 0.66);
+      --panel-border: rgba(255, 255, 255, 0.14);
+      --accent: #63b3ff;
+      --danger: #ff5c80;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+
+    
+body{
+    margin:0;
+    height:100vh;
+
+    /* dotted pattern and main background gradient */
+    background:
+        radial-gradient(rgba(53,233,255,0.35) 1px, transparent 1px),
+        radial-gradient(circle at center,
+            #2a6c73 0%,
+            #1b4e58 40%,
+            #0e2f3a 70%,
+            #031a2b 100%
+        );
+    background-size: 6px 6px, cover;
+}
+     
+    
+
+    #audioVisualizer {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      z-index: 1;
+    }
+
+    .panel {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      width: min(980px, calc(100vw - 24px));
+      z-index: 2;
+
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      padding: 12px;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    label {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    select, button {
+      height: 38px;
+      border-radius: 9px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      background: rgba(0, 0, 0, 0.28);
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+      transition: 120ms ease;
+    }
+
+    select:hover, button:hover { border-color: rgba(255, 255, 255, 0.35); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    #startbtn {
+      border: none;
+      background: linear-gradient(135deg, var(--accent), #8fd8ff);
+      color: #04203c;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #stopbtn {
+      border: none;
+      background: linear-gradient(135deg, var(--danger), #ff809d);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #output {
+      margin: 0;
+      min-height: 88px;
+      max-height: 200px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .hint {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      margin-right: 6px;
+      border-radius: 999px;
+      background: #6df7a9;
+      box-shadow: 0 0 10px rgba(109, 247, 169, 0.85);
+      vertical-align: middle;
+    }
+
+    @media (max-width: 640px) {
+      .panel { bottom: 10px; padding: 10px; }
+      #output { max-height: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="audioVisualizer"></canvas>
+
+  <div class="panel">
+    <div class="controls">
+      <label for="inputMode">Capture:</label>
+      <select id="inputMode">
+        <option value="mic">Mic only</option>
+        <option value="system">System audio only</option>
+        <option value="both">Mic + System audio</option>
+      </select>
+
+      <button id="startbtn">Start</button>
+      <button id="stopbtn" disabled>Stop</button>
+    </div>
+
+    <pre id="output"><span class="dot"></span>Ready.</pre>
+    <div class="hint">
+      For system audio, enable <b>Share tab audio</b> or <b>Share system audio</b> in the browser picker.
+    </div>
+  </div>
+
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/public/voice.js"></script>
+</body>
+</html>
