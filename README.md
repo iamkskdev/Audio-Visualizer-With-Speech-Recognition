@@ -16,9 +16,9 @@ It captures microphone or system audio, visualizes the sound frequencies, and co
 ## Screenshots
 
 ### Main Interface
-Shows the main UI of the audio visualizer with microphone capture enabled.
+Shows the main UI of the audio visualizer.
 
-![Main Interface](Screenshots/Interface.png)
+![Speech Recognition](Screenshots/Stop-State.png)
 
 ---
 
@@ -39,4 +39,5 @@ Users can choose between microphone input, system audio, or both.
 ### Speech Recognition Output
 Displays the recognized speech text and assistant responses in real time.
 
-![Speech Recognition](Screenshots/Stop-State.png)
+
+![Main Interface](Screenshots/Interface.png)
